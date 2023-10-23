@@ -40,7 +40,7 @@ export const register = async (req: express.Request, res: express.Response) => {
 				_id: user._id,
 				email,
 				username,
-				avatar
+				avatar,
 			})
 		}
 		return res.status(400).send('unknown error')
@@ -207,5 +207,21 @@ export const userInfo = async (req: express.Request, res: express.Response) => {
 	} catch (error) {
 		console.log('[user-controller-userInfo]', error)
 		return res.status(400).send('unknown error occurs')
+	}
+}
+
+export const authenticateStatus = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	try {
+		let { sessionToken } = req.cookies
+		if(!sessionToken ) throw new Error('token error')
+		const user = await getUserByToken(sessionToken)
+		if(!user ) throw new Error("user doesn't exist.")
+		return res.send(user)
+	} catch (error) {
+		console.log(error)
+		return res.sendStatus(400)
 	}
 }

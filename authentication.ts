@@ -261,3 +261,17 @@ export const userInfo = async (id: string) => {
 		return
 	}
 }
+
+export const authenticateStatus = async () => {
+	try {
+		const res = await fetch(SERVER + '/api/user/check', {
+			method: 'GET',
+			credentials: 'include',
+		})
+		if (res.status === 200) return await res.json()
+		return 
+	} catch (error) {
+		console.log('[API-authentication-check]', error)
+		return 
+	}
+}
