@@ -8,7 +8,7 @@ const port = 8081
 const SERVER = host + ':' + port
 
 /* patterns */
-const emailPattern = /.*/g
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const idPattern = /\b[0-9a-f]{24}$\b/
 
 /**
@@ -26,8 +26,8 @@ export const register = async (
 	avatar: string | null
 ) => {
 	try {
-		if (!email || !username || !password) return
-		// todo: pattern test
+		if (!email || !username || !password || !emailPattern.test(email))
+			return
 		const res = await fetch(SERVER + '/api/user/register', {
 			method: 'PUT',
 			body: JSON.stringify({
@@ -61,9 +61,7 @@ export const register = async (
  */
 export const login = async (email: string, password: string) => {
 	try {
-		if (!email || !password) return
-		// todo: pattern test
-
+		if (!email || !password || !emailPattern.test(email)) return
 		const res = await fetch(SERVER + '/api/user/login', {
 			method: 'POST',
 			headers: {
@@ -122,9 +120,14 @@ export const changePassword = async (
 	newPassword: string
 ) => {
 	try {
-		if (!email || !oldPassword || !newPassword)
+		if (
+			!email ||
+			!oldPassword ||
+			!newPassword ||
+			!emailPattern.test(email) ||
+			oldPassword === newPassword
+		)
 			throw new Error('input error')
-		// todo: pattern test
 		const res = await fetch(SERVER + '/api/user/change-password', {
 			method: 'POST',
 			headers: {
@@ -157,8 +160,8 @@ export const changePassword = async (
  */
 export const changeAvatar = async (email: string, avatar: string) => {
 	try {
-		if (!email || !avatar) throw new Error('input error')
-		// todo: pattern test
+		if (!email || !avatar || !emailPattern.test(email))
+			throw new Error('input error')
 		const res = await fetch(SERVER + '/api/user/change-avatar', {
 			method: 'POST',
 			headers: {
@@ -190,8 +193,7 @@ export const changeAvatar = async (email: string, avatar: string) => {
  */
 export const deleteUser = async (email: string) => {
 	try {
-		if (!email) throw new Error('input error')
-		// todo: pattern test
+		if (!email || !emailPattern.test(email)) throw new Error('input error')
 		const res = await fetch(SERVER + '/api/user/delete', {
 			method: 'DELETE',
 			headers: {
