@@ -27,6 +27,7 @@ export const register = async (req: express.Request, res: express.Response) => {
 		if (!email || !username || !password) {
 			return res.status(400).send('error request body')
 		}
+		// todo: pattern test
 		// email check
 		let user = await getUserByEmail(email)
 		if (user) {
@@ -35,7 +36,12 @@ export const register = async (req: express.Request, res: express.Response) => {
 		// register
 		user = await createUser(email, username, password, avatar)
 		if (user) {
-			return res.sendStatus(200)
+			return res.status(200).send({
+				_id: user._id,
+				email,
+				username,
+				avatar
+			})
 		}
 		return res.status(400).send('unknown error')
 	} catch (error) {
@@ -106,6 +112,7 @@ export const changePassword = async (
 export const login = async (req: express.Request, res: express.Response) => {
 	try {
 		let { email, password } = req.body
+		// todo: pattern test
 		if (!email || !password)
 			return res
 				.status(400)
