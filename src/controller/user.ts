@@ -215,10 +215,10 @@ export const authenticateStatus = async (
 	res: express.Response
 ) => {
 	try {
-		let { sessionToken } = req.cookies
-		if(!sessionToken ) throw new Error('token error')
+		let { sessionToken } = req.body
+		if (!sessionToken) throw new Error('token error')
 		const user = await getUserByToken(sessionToken)
-		if(!user ) throw new Error("user doesn't exist.")
+		if (!user) throw new Error("user doesn't exist.")
 		return res.send(user)
 	} catch (error) {
 		console.log(error)

@@ -15,7 +15,7 @@ import isOwner from '../middlewares/isOwner'
 
 const userRouter = express.Router()
 
-userRouter.get('/user/check', authenticateStatus)
+userRouter.post('/user/check', authenticateStatus)
 userRouter.get('/user/list', listAll)
 userRouter.get('/user/:id', userInfo)
 userRouter.post('/user/login', login)

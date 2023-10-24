@@ -262,16 +262,23 @@ export const userInfo = async (id: string) => {
 	}
 }
 
-export const authenticateStatus = async () => {
+export const authenticateStatus = async (sessionToken: string) => {
 	try {
+		if (!sessionToken) return
 		const res = await fetch(SERVER + '/api/user/check', {
-			method: 'GET',
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				sessionToken,
+			}),
 			credentials: 'include',
 		})
 		if (res.status === 200) return await res.json()
-		return 
+		return
 	} catch (error) {
 		console.log('[API-authentication-check]', error)
-		return 
+		return
 	}
 }
