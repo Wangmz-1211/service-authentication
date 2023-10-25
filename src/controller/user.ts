@@ -21,8 +21,6 @@ import { get } from 'lodash'
 export const register = async (req: express.Request, res: express.Response) => {
 	try {
 		let { email, username, password, avatar } = req.body
-		console.log(email, username, password, avatar)
-
 		// input check
 		if (!email || !username || !password) {
 			return res.status(400).send('error request body')
