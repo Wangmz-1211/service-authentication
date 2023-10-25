@@ -282,3 +282,17 @@ export const authenticateStatus = async (sessionToken: string) => {
 		return
 	}
 }
+
+export const loginStatus = async () => {
+	try {
+		const res = await fetch(SERVER + '/api/user/login/status', {
+			method: 'POST',
+			credentials: 'include',
+		})
+		if (res.status == 200) return await res.json() //user information
+		return
+	} catch (error) {
+		console.log('[API-authentication-login-check]', error)
+		return
+	}
+}

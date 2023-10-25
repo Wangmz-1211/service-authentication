@@ -4,6 +4,7 @@ import {
 	listAll,
 	changePassword,
 	login,
+	loginStatus,
 	logout,
 	deleteUser,
 	changeAvatar,
@@ -19,6 +20,7 @@ userRouter.post('/user/check', authenticateStatus)
 userRouter.get('/user/list', listAll)
 userRouter.get('/user/:id', userInfo)
 userRouter.post('/user/login', login)
+userRouter.post('/user/login/status', loginStatus)
 userRouter.post('/user/logout', logout)
 userRouter.post('/user/change-password', changePassword)
 userRouter.post('/user/change-avatar', isAuthenticated, isOwner, changeAvatar)

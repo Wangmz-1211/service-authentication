@@ -138,6 +138,31 @@ export const login = async (req: express.Request, res: express.Response) => {
 }
 
 /**
+ * This controller is for initializing the initial state of the
+ * user reducer. If the user refresh the page after getting the
+ * token, the sessionToken will stay but the redux information will
+ * lose. So whenever loading the page, this could be request.
+ * @param req 
+ * @param res 
+ * @returns user information
+ */
+export const loginStatus = async (
+	req: express.Request,
+	res: express.Response
+) => {
+	try {
+		let { sessionToken } = req.cookies
+		if (!sessionToken) return res.sendStatus(403)
+		const user = await getUserByToken(sessionToken)
+		if (!user) return res.sendStatus(403)
+		return res.status(200).send(user)
+	} catch (error) {
+		console.error('[Controller-user-login-status] ', error)
+		return res.sendStatus(400)
+	}
+}
+
+/**
  * Clear the sessionToken at both client(cookie) and database.
  *
  * @param req request
