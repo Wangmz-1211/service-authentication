@@ -3,6 +3,7 @@ import {
 	register,
 	listAll,
 	changePassword,
+	changeUsername,
 	login,
 	loginStatus,
 	logout,
@@ -23,6 +24,7 @@ userRouter.post('/user/login', login)
 userRouter.post('/user/login/status', loginStatus)
 userRouter.post('/user/logout', logout)
 userRouter.post('/user/change-password', changePassword)
+userRouter.post('/user/change-username', isAuthenticated, isOwner, changeUsername)
 userRouter.post('/user/change-avatar', isAuthenticated, isOwner, changeAvatar)
 userRouter.put('/user/register', register)
 userRouter.delete('/user/delete', isAuthenticated, isOwner, deleteUser)

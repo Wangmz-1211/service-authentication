@@ -1,6 +1,13 @@
 import { get } from 'lodash'
 import express from 'express'
 
+/**
+ * This middleware is just for confirming the user has the privilege to make some operation to the resource.
+ * @param req for checking, a `email` of the resource's owner should be concluded in the request body
+ * @param res 
+ * @param next If the user is owner, the request will go to the next function.
+ * @returns If the user requesting is not the owner of the resource, this would return a 403 response.
+ */
 const isOwner = async (
 	req: express.Request,
 	res: express.Response,

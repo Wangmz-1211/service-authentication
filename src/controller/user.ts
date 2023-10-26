@@ -102,6 +102,27 @@ export const changePassword = async (
 }
 
 /**
+ * Change the username of an user.
+ * In the req body, an `email` and an `username` are necessary, where the `username` refers to
+ * the new username.
+ * @param req
+ * @param res
+ * @returns status code 200 | 400
+ */
+export const changeUsername = async (req: express.Request, res: express.Response) => {
+	try {
+		const userId: string = get(req, 'identity.id')!
+		let { username } = req.body
+		if (!username) return res.status(400).send('The username is null.')
+		const user = await updateUser(userId, { username })
+		return res.sendStatus(200)
+	} catch (error) {
+		console.error('[Controller-change-username] ', error)
+		return res.status(400).send('unknown error occurs')
+	}
+}
+
+/**
  * Generate a sessionToken and store in both database and client(cookie).
  * @param req request
  * @param res response
@@ -140,8 +161,8 @@ export const login = async (req: express.Request, res: express.Response) => {
  * user reducer. If the user refresh the page after getting the
  * token, the sessionToken will stay but the redux information will
  * lose. So whenever loading the page, this could be request.
- * @param req 
- * @param res 
+ * @param req
+ * @param res
  * @returns user information
  */
 export const loginStatus = async (
@@ -207,10 +228,8 @@ export const changeAvatar = async (
 	try {
 		let { avatar } = req.body
 		const id = get(req, 'identity._id')!
-		const user = await getUserById(id)
-		if (!user) return res.status(400).send("user doesn't exist")
 		// maybe the avatar url should be checked here
-		await updateUser(user._id.toString(), { avatar })
+		await updateUser(id, { avatar })
 		return res.sendStatus(200)
 	} catch (error) {
 		console.log(error)
@@ -233,6 +252,14 @@ export const userInfo = async (req: express.Request, res: express.Response) => {
 	}
 }
 
+/**
+ * This function is designed to confirm the user identity for other services.
+ * ! This function is for server only.
+ * ! No user will call this.
+ * @param req 
+ * @param res 
+ * @returns 
+ */
 export const authenticateStatus = async (
 	req: express.Request,
 	res: express.Response
