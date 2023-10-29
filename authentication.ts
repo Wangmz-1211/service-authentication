@@ -3,9 +3,10 @@
  */
 
 /* server related setting */
-const host = 'http://localhost'
-const port = 8081
-const SERVER = host + ':' + port
+const protocol = 'http'
+const host = process.env.NODE_ENV === 'production' ? 'wangmz.click' : 'localhost'
+const port = process.env.PORT || 8081
+const SERVER = protocol + '://' + host + ':' + port
 
 /* patterns */
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
