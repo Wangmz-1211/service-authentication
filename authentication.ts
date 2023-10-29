@@ -4,8 +4,8 @@
 
 /* server related setting */
 const protocol = 'http'
-const host = process.env.NODE_ENV === 'production' ? 'wangmz.click' : 'localhost'
-const port = process.env.PORT || 8081
+const host = process.env.AUTHENTICATION_HOST || 'localhost'
+const port = process.env.AUTHENTICATION_PORT || 8081
 const SERVER = protocol + '://' + host + ':' + port
 
 /* patterns */

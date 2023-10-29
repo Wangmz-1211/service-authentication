@@ -6,8 +6,12 @@ import mongoose from 'mongoose'
 import userRouter from './route/user'
 import cookieRefresher from './middlewares/cookieRefresher'
 
+/* this variable must be set by env variable */
+const MONGO_URL = process.env.MONGO_URL
+if( !MONGO_URL ) throw new Error('MONGO_URL environment variable is necessary!')
+
 const app = express()
-const port = 8081
+const port = 3000
 // middlewares
 app.use(cors({ credentials: true, origin: true }))
 app.use(BodyParser.json())
@@ -20,8 +24,6 @@ app.listen(port, () => {
 	console.log('Started express server at http://localhost:' + port + '/')
 })
 
-const MONGO_URL =
-	'mongodb+srv://wangmz:wangmz@service-authentication.oy7g56g.mongodb.net/?retryWrites=true&w=majority'
 
 mongoose
 	.connect(MONGO_URL)
